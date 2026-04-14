@@ -34,11 +34,12 @@ export default function QrScanner({ onScan, onError }: QrScannerProps) {
       setIsScanning(false);
     };
 
-    const handleError = (error: Error) => {
-      if (onError && error.message.includes('NotFoundException')) {
+    const handleError = (errorMessage: string) => {
+      // html5-qrcodeはスキャン中に各フレームで NotFoundException を投げるので無視する
+      if (errorMessage.includes('NotFoundException')) {
         return;
       }
-      console.error('QR Code scanning error:', error);
+      console.error('QR Code scanning error:', errorMessage);
     };
 
     scanner.render(handleSuccess, handleError);
